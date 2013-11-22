@@ -110,208 +110,205 @@ class Benchmark_2013(object):
     ''' The benchmark functions'''
     ''' Fully-separable functions'''
     # Shifted elliptic function
-    @staticmethod
-    def _f1(x, x_opt):
-        return _elliptic(_t_osz(_shift(x, x_opt)))
+    def f1(self, x):
+        return _elliptic(_t_osz(_shift(x, self.x_opt)))
     
     # Shifted rastrigin's function
-    @staticmethod
-    def _f2(x, x_opt, alpha, beta):
-        mat = _t_diag(x, alpha)
-        return _rastrigin(np.dot(mat, _t_asy(_t_osz(_shift(x, x_opt)), beta)))
+    def f2(self, x):
+        mat = _t_diag(x, self.alpha)
+        return _rastrigin(np.dot(mat, _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta)))
     
     # Shifted ackley's function
-    @staticmethod
-    def _f3(x, x_opt, alpha, beta):
-        mat = _t_diag(x, alpha)
-        return _ackley(np.dot(mat, _t_asy(_t_osz(_shift(x, x_opt)), beta)))
+    def f3(self, x):
+        mat = _t_diag(x, self.alpha)
+        return _ackley(np.dot(mat, _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta)))
     
     ''' partially additice separable functions 1'''
     # 7-nonseparable, 1-separable shifted and rotated elliptic function
-    def _f4(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x):
-        z = _t_osz(_shift(x, x_opt))
+    def f4(self, x):
+        z = _t_osz(_shift(x, self.x_opt))
         count = 0
         fit = 0
-        for i in range(s.size-1):
-            if s[i] == 25:
-                fit += w[i]*_elliptic(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size-1):
+            if self.s[i] == 25:
+                fit += self.w[i]*_elliptic(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_elliptic(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_elliptic(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_elliptic(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_elliptic(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
-        fit += _elliptic(z[p[count:])
+        fit += _elliptic(z[self.p[count:])
         return fit
     
     # 7-nonseparable, 1-separable shifted and rotated rastrigin's function
-    def _f5(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, alpha, beta):
-        z = np.dot(_t_diag(x, alpha), _t_asy(_t_osz(_shift(x, x_opt)), beta))
+    def f5(self, x):
+        z = np.dot(_t_diag(x, self.alpha), _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta))
         count = 0
         fit = 0
-        for i in range(s.size-1):
-            if s[i] == 25:
-                fit += w[i]*_rastrigin(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size-1):
+            if self.s[i] == 25:
+                fit += self.w[i]*_rastrigin(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_rastrigin(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_rastrigin(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_rastrigin(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_rastrigin(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
-        fit += _rastrigin(z[p[count:])
+        fit += _rastrigin(z[self.p[count:])
         return fit
         
     # 7-nonseparable, 1-separable shifted and rotated ackley's function
-    def _f6(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, alpha, beta):
-        z = np.dot(_t_diag(x, alpha), _t_asy(_t_osz(_shift(x, x_opt)), beta))
+    def f6(self, x):
+        z = np.dot(_t_diag(x, self.alpha), _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta))
         count = 0
         fit = 0
-        for i in range(s.size-1):
-            if s[i] == 25:
-                fit += w[i]*_ackley(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size-1):
+            if self.s[i] == 25:
+                fit += self.w[i]*_ackley(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_ackley(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_ackley(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_ackley(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_ackley(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
-        fit += _ackley(z[p[count:])
+        fit += _ackley(z[self.p[count:])
         return fit
         
     # 7-nonseparable, 1-separable shifted and rotated schwefel's function
-    def _f7(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, beta):
-        z = _t_asy(_t_osz(_shift(x, x_opt)), beta)
+    def f7(self, x):
+        z = _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta)
         count = 0
         fit = 0
-        for i in range(s.size-1):
-            if s[i] == 25:
-                fit += w[i]*_schwefel(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size-1):
+            if self.s[i] == 25:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_schwefel(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_schwefel(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
-        fit += _schwefel(z[p[count:])
+        fit += _schwefel(z[self.p[count:])
         return fit
     
     ''' partially additice separable functions 2'''
     # 20-nonseparable shifted and rotated elliptic function   
-    def _f8(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x):
-        z = _t_osz(_shift(x, x_opt))
+    def f8(self, x):
+        z = _t_osz(_shift(x, self.x_opt))
         count = 0
         fit = 0
-        for i in range(s.size):
-            if s[i] == 25:
-                fit += w[i]*_elliptic(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size):
+            if self.s[i] == 25:
+                fit += self.w[i]*_elliptic(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_elliptic(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_elliptic(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_elliptic(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_elliptic(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
         return fit
         
     # 20-nonseparable shifted and rotated rastrigin's function  
-    def _f9(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, alpha, beta):
-        z = np.dot(_t_diag(x, alpha), _t_asy(_t_osz(_shift(x, x_opt)), beta))
+    def f9(self, x):
+        z = np.dot(_t_diag(x, self.alpha), _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta))
         count = 0
         fit = 0
-        for i in range(s.size):
-            if s[i] == 25:
-                fit += w[i]*_rastrigin(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size):
+            if self.s[i] == 25:
+                fit += self.w[i]*_rastrigin(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_rastrigin(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_rastrigin(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_rastrigin(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_rastrigin(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
         return fit  
     
     # 20-nonseparable shifted and rotated ackley's function
-    def _f10(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, alpha, beta):
-        z = np.dot(_t_diag(x, alpha), _t_asy(_t_osz(_shift(x, x_opt)), beta))
+    def f10(self, x):
+        z = np.dot(_t_diag(x, self.alpha), _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta))
         count = 0
         fit = 0
-        for i in range(s.size):
-            if s[i] == 25:
-                fit += w[i]*_ackley(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size):
+            if self.s[i] == 25:
+                fit += self.w[i]*_ackley(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_ackley(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_ackley(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_ackley(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_ackley(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
         return fit
     
     # 20-nonseparable shifted schwefel's function
-    def _f11(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, beta):
-        z = _t_asy(_t_osz(_shift(x, x_opt)), beta)
+    def f11(self, x):
+        z = _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta)
         count = 0
         fit = 0
-        for i in range(s.size):
-            if s[i] == 25:
-                fit += w[i]*_schwefel(np.dot(rota_mat_25, z[p[count:count+25]]))
+        for i in range(self.s.size):
+            if self.s[i] == 25:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
                 count += 25
-            elif s[i] == 50:
-                fit += w[i]*_schwefel(np.dot(rota_mat_50, z[p[count:count+50]]))
+            elif self.s[i] == 50:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
                 count += 50
             else:
-                fit += w[i]*_schwefel(np.dot(rota_mat_100, z[p[count:count+100]]))
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
                 count += 100
         return fit
         
     ''' overlapping functions'''
     # shifted rosenbrock's function
-    def _f12(x, x_opt):
-        return _rosenbrock(_shifet(x, x_opt))
+    def f12(self, x):
+        return _rosenbrock(_shifet(x, self.x_opt))
     
     # shifted schwefel's function with conforming overlapping subcomponents
-    def _f13(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, beta, m):
-        z = _t_asy(_t_osz(_shift(x, x_opt)), beta)
+    def f13(self, x):
+        z = _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta)
         count = 0
         fit = 0
-        for i in range(s.size):
-            if s[i] == 25:
-                fit += w[i]*_schwefel(np.dot(rota_mat_25, z[p[count:count+25]]))
-                count += 25-m
-            elif s[i] == 50:
-                fit += w[i]*_schwefel(np.dot(rota_mat_50, z[p[count:count+50]]))
-                count += 50-m
+        for i in range(self.s.size):
+            if self.s[i] == 25:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_25, z[self.p[count:count+25]]))
+                count += 25-self.m
+            elif self.s[i] == 50:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_50, z[self.p[count:count+50]]))
+                count += 50-self.m
             else:
-                fit += w[i]*_schwefel(np.dot(rota_mat_100, z[p[count:count+100]]))
-                count += 100-m
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_100, z[self.p[count:count+100]]))
+                count += 100-self.m
         return fit
     
     # shifted schwefel's function with confllicting overlapping subcomponents
-    def _f14(s, x_opt, p, rota_mat_25, rota_mat_50, rota_mat_100, w, x, beta, m):
-        c = np.cumsum(s)
+    def f14(self, x):
+        c = np.cumsum(self.s)
         count = 0
         fit = 0
-        for i in range(s.size):
-            z = x[p[count:count+s[i]]] - x_opt(c[i-1]:c[i])
-            z = _t_asy(_t_osz(z), beta)
-            if s[i] == 25:
-                fit += w[i]*_schwefel(np.dot(rota_mat_25, z))
-                count += 25-m
-            elif s[i] == 50:
-                fit += w[i]*_schwefel(np.dot(rota_mat_50, z))
-                count += 50-m
+        for i in range(self.s.size):
+            z = x[self.p[count:count+s[i]]] - self.x_opt(c[i-1]:c[i])
+            z = _t_asy(_t_osz(z), self.beta)
+            if self.s[i] == 25:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_25, z))
+                count += 25-self.m
+            elif self.s[i] == 50:
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_50, z))
+                count += 50-self.m
             else:
-                fit += w[i]*_schwefel(np.dot(rota_mat_100, z))
-                count += 100-m
+                fit += self.w[i]*_schwefel(np.dot(self.rota_mat_100, z))
+                count += 100-self.m
         return fit
 
     ''' fully non-separable functions'''
     # shifted schwefel's function
-    def _f15(x, x_opt):
-        z = _t_asy(_t_osz(_shift(x, x_opt)), beta)
+    def f15(self, x):
+        z = _t_asy(_t_osz(_shift(x, self.x_opt)), self.beta)
         return _schwefel(z)
     
